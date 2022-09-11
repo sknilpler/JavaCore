@@ -60,7 +60,11 @@ public class Main {
             new Person(8, "Amelia"),
     };
 
-
+    /**
+     * <b>Функция убрает дубликаты, отсортировывает по идентификатору, сгруппировывает по имени</b>
+     * @param persons массив Person[]
+     * @return отформатированные данные в виде Map<String, Long>, где Key - имя, а Value - кол-во повторений
+     */
     public static Map<String, Long> getPersonFrequency(Person[] persons) {
         if (persons != null) {
             return Arrays.stream(persons)
@@ -72,6 +76,14 @@ public class Main {
         return new HashMap<>();
     }
 
+    /**
+     *<b>Метод вычисляет пару из элементов входного массива, которая в сумме получает значение входного параметра</b>
+     * @param arr массив элементов
+     * @param s искомая сумма
+     * @return [0, 0] - если arr = null<br>
+     *          [] - если нет совпадений<br>
+     *          [int, int] - если элементы найдены
+     */
     public static int[] getPairGivingSum(int[] arr, int s) {
         if (arr != null) {
             return Arrays.stream(arr).flatMap(a1 -> Arrays.stream(arr)
@@ -80,6 +92,41 @@ public class Main {
                     .toArray();
         }
         return new int[]{0, 0};
+    }
+
+    /**
+     * <b>Функция нечеткого поиска</b>
+     * @param s1 искомая строка
+     * @param s2 строка, в которой осуществляется поиск
+     * @return true - если есть совпаадения<br> false - если нет совпадений
+     */
+    public static boolean fuzzySearch(String s1, String s2) {
+        if (!s1.equals("") && !s2.equals("")) {
+
+            char[] expressionChars = s1.toCharArray();
+            char[] textChars = s2.toCharArray();
+            boolean[] matches = new boolean[s1.length()];
+
+            int index = 0;
+            for (int i = 0; i < s1.length(); i++) {
+                for (int j = index; j < s2.length(); j++) {
+                    if (expressionChars[i] == textChars[j]) {
+                        matches[i] = true;
+                        if (index < s2.length() - 1) {
+                            index = j + 1;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            for (Boolean b : matches) {
+                if (!b) return false;
+            }
+
+            return true;
+
+        } else return false;
     }
 
     public static void main(String[] args) {
@@ -113,6 +160,15 @@ public class Main {
         System.out.println(Arrays.toString(getPairGivingSum(arr, s)));
         System.out.println();
         System.out.println();
+
+        System.out.println("Задача №3");
+        System.out.println();
+        System.out.println(fuzzySearch("car", "ca6$$#_rtwheel"));
+        System.out.println(fuzzySearch("cwhl", "cartwheel"));
+        System.out.println(fuzzySearch("cwhee", "cartwheel"));
+        System.out.println(fuzzySearch("cartwheel", "cartwheel"));
+        System.out.println(fuzzySearch("cwheeel", "cartwheel"));
+        System.out.println(fuzzySearch("lw", "cartwheel"));
 
     }
 }
