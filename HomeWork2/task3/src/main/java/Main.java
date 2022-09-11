@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
@@ -71,6 +72,16 @@ public class Main {
         return new HashMap<>();
     }
 
+    public static int[] getPairGivingSum(int[] arr, int s) {
+        if (arr != null) {
+            return Arrays.stream(arr).flatMap(a1 -> Arrays.stream(arr)
+                            .flatMap(a2 -> a1 + a2 == s ? IntStream.of(a1, a2) : IntStream.empty())
+                            .findFirst().stream())
+                    .toArray();
+        }
+        return new int[]{0, 0};
+    }
+
     public static void main(String[] args) {
 
         System.out.println("Raw data:");
@@ -89,6 +100,19 @@ public class Main {
         System.out.println();
         System.out.println();
 
+        int[] arr = new int[]{3, 4, 2, 7};
+        int s = 10;
+
+        System.out.println("Задача №2");
+        System.out.println();
+        System.out.print("Входной массив: ");
+        System.out.println(Arrays.toString(arr));
+        System.out.print("Искомая сумма: ");
+        System.out.println(s);
+        System.out.println("Результат:");
+        System.out.println(Arrays.toString(getPairGivingSum(arr, s)));
+        System.out.println();
+        System.out.println();
 
     }
 }
